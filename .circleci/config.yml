@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  build:
+    working_directory: /go/src/github.com/bacongobbler/draft-generator-controller
+    docker:
+      - image: golang:1.10
+    environment:
+      AZURE_CONTAINER: "stuff"
+      AZURE_STORAGE_ACCOUNT: "bacongobbler"
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: install dependencies
+          command: .circleci/bootstrap.sh
+      - save_cache:
+          key: vendor-{{ checksum "Gopkg.toml" }}-{{ checksum "Gopkg.lock" }}
+          paths:
+            - vendor
+      - run:
+          name: Test
+          command: .circleci/test.sh
+      - run:
+          name: Deploy to Azure
+          command: .circleci/deploy-azure.sh
