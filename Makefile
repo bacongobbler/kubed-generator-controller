@@ -65,10 +65,6 @@ test-cover:
 test-lint:
 	script/lint.sh
 
-.PHONY: test-unit
-test-unit:
-	$(GO) test $(GOFLAGS) -cover -run $(TESTFLAGS) ./cmd/... ./version/...
-
 HAS_GOMETALINTER := $(shell command -v gometalinter;)
 HAS_DEP := $(shell command -v dep;)
 HAS_GOX := $(shell command -v gox;)

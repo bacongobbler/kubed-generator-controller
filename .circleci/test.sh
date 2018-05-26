@@ -6,17 +6,17 @@ DRAFT_ROOT="${BASH_SOURCE[0]%/*}/.."
 
 cd "$DRAFT_ROOT"
 
-run_unit_test() {
+run_unit_tests() {
   echo "Running unit tests"
-  make test-unit
+  make test-cover
 }
 
-run_style_check() {
+run_style_checks() {
   echo "Running style checks"
   make test-lint
 }
 
 case "${CIRCLE_NODE_INDEX-0}" in
-  0) run_unit_test   ;;
-  1) run_style_check ;;
+  0) run_unit_tests   ;;
+  1) run_style_checks ;;
 esac
