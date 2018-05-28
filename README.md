@@ -6,8 +6,9 @@ The controller generator for Draft.
 
 ## Installation
 
-Fetch the latest version of `draft pack-repo` using
+Fetch the latest version of `draft generate controller` using
 
 ```
+$ draft plugin repository add https://github.com/bacongobbler/draft-generators
 $ draft plugin install generator-controller
 ```
