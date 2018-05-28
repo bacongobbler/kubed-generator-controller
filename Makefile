@@ -18,6 +18,8 @@ all: build
 .PHONY: build
 build:
 	GOBIN=$(BINDIR) $(GO) install $(GOFLAGS) -tags '$(TAGS)' -ldflags '$(LDFLAGS)' github.com/bacongobbler/draft-generator-controller/cmd/...
+	mkdir -p $(BINDIR)/packs/default
+	cp -R packs $(BINDIR)/packs/default/
 
 .PHONY: build-cross
 build-cross: LDFLAGS += -extldflags "-static"
@@ -30,6 +32,7 @@ dist:
 		cd _dist && \
 		$(DIST_DIRS) cp ../LICENSE {} \; && \
 		$(DIST_DIRS) cp ../README.md {} \; && \
+		$(DIST_DIRS) cp -R ../packs {} \; && \
 		$(DIST_DIRS) tar -zcf $(NAME)-${VERSION}-{}.tar.gz {} \; && \
 		$(DIST_DIRS) zip -r $(NAME)-${VERSION}-{}.zip {} \; \
 	)
@@ -40,18 +43,9 @@ checksum:
 		shasum -a 256 "$${f}"  | awk '{print $$1}' > "$${f}.sha256" ; \
 	done
 
-.PHONY: compress-binary
-compress-binary: BINDIR = ./rootfs/bin
-compress-binary:
-	@if [ -z $$(which upx) ]; then \
-	  echo "Missing \`upx\` tool to compress binaries"; \
-	else \
-	  upx --quiet ${BINDIR}/${NAME}; \
-	fi
-
 .PHONY: clean
 clean:
-	-rm bin/*
+	-rm -rf bin/
 	-rm -rf _dist/
 
 .PHONY: test
