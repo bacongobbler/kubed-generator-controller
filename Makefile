@@ -34,8 +34,8 @@ dist:
 		$(DIST_DIRS) cp ../README.md {} \; && \
 		$(DIST_DIRS) mkdir -p {}/packs/default \; && \
 		$(DIST_DIRS) cp -R ../packs {}/packs/default/ \; && \
-		$(DIST_DIRS) tar -zcf $(NAME)-${VERSION}-{}.tar.gz {} \; && \
-		$(DIST_DIRS) zip -r $(NAME)-${VERSION}-{}.zip {} \; \
+		$(DIST_DIRS) tar -C {} -zcf $(NAME)-${VERSION}-{}.tar.gz . \; && \
+		$(DIST_DIRS) 7z a -tzip $(NAME)-${VERSION}-{}.zip -w {}/. \; \
 	)
 
 .PHONY: checksum
