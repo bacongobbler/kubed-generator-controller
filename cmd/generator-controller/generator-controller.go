@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -71,7 +72,8 @@ func (c *generateCmd) run() error {
 	}
 
 	// --pack was explicitly defined, so we can just lazily use that here. No detection required.
-	packsFound, err := pack.Find("packs", c.pack)
+	// if DRAFT_PLUGIN_DIR is unset, we just fallback to ./packs
+	packsFound, err := pack.Find(filepath.Join(os.Getenv("DRAFT_PLUGIN_DIR"), "packs"), c.pack)
 	if err != nil {
 		return err
 	}
