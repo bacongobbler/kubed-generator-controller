@@ -1,5 +1,5 @@
 NAME            = generator-controller
-DIST_DIRS       = find * -type d -exec
+DIST_DIRS       = find * -maxdepth 0 -type d -exec
 
 # go option
 GO        ?= go
@@ -32,7 +32,8 @@ dist:
 		cd _dist && \
 		$(DIST_DIRS) cp ../LICENSE {} \; && \
 		$(DIST_DIRS) cp ../README.md {} \; && \
-		$(DIST_DIRS) cp -R ../packs {} \; && \
+		$(DIST_DIRS) mkdir -p {}/packs/default \; && \
+		$(DIST_DIRS) cp -R ../packs {}/packs/default/ \; && \
 		$(DIST_DIRS) tar -zcf $(NAME)-${VERSION}-{}.tar.gz {} \; && \
 		$(DIST_DIRS) zip -r $(NAME)-${VERSION}-{}.zip {} \; \
 	)
