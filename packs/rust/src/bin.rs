@@ -1,3 +1,4 @@
+use std::env;
 use std::net::{TcpStream, TcpListener};
 use std::io::{Write, Error};
 use std::thread;
@@ -10,8 +11,9 @@ fn reply(mut stream: TcpStream) -> Result<(), Error> {
 }
 
 fn main() {
-    let listener = TcpListener::bind("127.0.0.1:8080").unwrap();
-    println!("👌 Listening for connections on port {}", 8080);
+    let port = env::var("PORT").expect("$PORT not found");
+    let listener = TcpListener::bind("127.0.0.1:".to_owned()+&port).unwrap();
+    println!("👌 Listening for connections on port {}", port);
     for stream in listener.incoming() {
 
         match stream {
