@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -91,8 +93,63 @@ func (c *generateCmd) run() error {
 		return fmt.Errorf("Multiple packs named %s found: %v", c.pack, packsFound)
 	}
 
+	// Each pack makes the assumption that they're listening on port 8080
+	addRoute("config/routes", fmt.Sprintf("/%s\t%s\t8080\t/", c.dest, c.dest))
+
+	// TODO: add a Deployment and Service to charts/appname/templates/
+	// TODO: append helper functions to charts/appname/templates/_helpers.tpl
+
 	fmt.Fprintln(c.stdout, "--> Ready to sail")
 	return nil
+}
+
+// addRoute adds a new route to fpath. It appends the route
+// above the default route so that it takes higher priority
+// in the list than the static files, but lower priority than
+// other routes higher up in the list.
+func addRoute(fpath, route string) error {
+	const defaultRoute = "/\tstatic\t"
+	b, err := ioutil.ReadFile(fpath)
+	if err != nil {
+		return err
+	}
+	content := string(b)
+	fileContent := ""
+	n, defaultRouteExists := containsDefaultRoute(content)
+	if defaultRouteExists {
+		for i, line := range strings.Split(content, "\n") {
+			if i == n {
+				fileContent += route + "\n"
+			}
+			fileContent += line + "\n"
+		}
+	} else {
+		fileContent = content
+		if !strings.HasSuffix(fileContent, "\n") && fileContent != "" {
+			fileContent += "\n"
+		}
+		fileContent += route + "\n"
+	}
+	return ioutil.WriteFile(fpath, []byte(fileContent), 0644)
+}
+
+// containsDefaultRoute determines if the content contains a line starting with
+//
+// / static 8080 /
+//
+// if it does, it returns the line number (0-indexed) where the first instance
+// of that route is found.
+func containsDefaultRoute(content string) (int, bool) {
+	for i, line := range strings.Split(content, "\n") {
+		fields := strings.Fields(line)
+		if len(fields) >= 4 {
+			if fields[0] == "/" && fields[1] == "static" &&
+				fields[2] == "8080" && fields[3] == "/" {
+				return i, true
+			}
+		}
+	}
+	return 0, false
 }
 
 func main() {
