@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  name = "github.com/Azure/draft"
+  packages = ["pkg/draft/manifest"]
+  revision = "9d73889a1318a435d126bc5df846610d30cfbe7f"
+  version = "v0.15.0"
+
+[[projects]]
+  name = "github.com/BurntSushi/toml"
+  packages = ["."]
+  revision = "b26d9c308763d68093482582cea63d69be07a0f0"
+  version = "v0.3.0"
+
+[[projects]]
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
@@ -26,6 +38,12 @@
   version = "v1.0.1"
 
 [[projects]]
+  name = "github.com/technosophos/moniker"
+  packages = ["."]
+  revision = "a5dbd03a2245d554160e3ae6bfdcf969fe58b431"
+  version = "0.2.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
@@ -43,6 +61,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "db0bbc91b19f552a7eb8622f435ad1f93853d5f05ad30c22c0d1b6f515ade8f9"
+  inputs-digest = "4b40b4b6c49965c981ea227efb2785d36e4d2e34e0c927c7dcc1d884ff13b569"
   solver-name = "gps-cdcl"
   solver-version = 1
