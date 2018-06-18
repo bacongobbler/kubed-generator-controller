@@ -131,12 +131,12 @@ func (c *generateCmd) run() error {
 	}
 
 	var config manifest.Manifest
-	if _, err := toml.DecodeFile(filepath.Join("config", "draft.toml"), &config); err != nil {
+	if _, err := toml.DecodeFile(filepath.Join("config", "kubed.toml"), &config); err != nil {
 		return err
 	}
-	appConfig, found := config.Environments[defaultDraftEnvironment()]
+	appConfig, found := config.Environments[defaultEnvironment()]
 	if !found {
-		return fmt.Errorf("Environment %v not found", defaultDraftEnvironment())
+		return fmt.Errorf("Environment %v not found", defaultEnvironment())
 	}
 
 	deploymentFile, err := os.Create(filepath.Join("charts", appConfig.Name, "templates", fmt.Sprintf("%s-deployment.yaml", c.name)))
@@ -273,7 +273,7 @@ func main() {
 	}
 }
 
-func defaultDraftEnvironment() string {
+func defaultEnvironment() string {
 	env := os.Getenv(environmentEnvVar)
 	if env == "" {
 		env = manifest.DefaultEnvironmentName
