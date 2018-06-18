@@ -3,7 +3,7 @@ package pack
 import (
 	"fmt"
 
-	"github.com/bacongobbler/draft-generator-controller/pkg/pack/repo"
+	"github.com/bacongobbler/kubed-generator-controller/pkg/pack/repo"
 )
 
 // CreateFrom scaffolds a directory with the src pack.

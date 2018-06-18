@@ -1,14 +1,15 @@
-[![CircleCI](https://circleci.com/gh/bacongobbler/draft-generator-controller/tree/master.svg?style=svg)](https://circleci.com/gh/bacongobbler/draft-generator-controller/tree/master)
+[![CircleCI](https://circleci.com/gh/bacongobbler/kubed-generator-controller/tree/master.svg?style=svg)](https://circleci.com/gh/bacongobbler/kubed-generator-controller/tree/master)
 
-# Draft Controller Generator
+# Kubed Controller Generator
 
-The controller generator for Draft.
+The controller generator for Kubed.
 
 ## Installation
 
-Fetch the latest version of `draft generate controller` using
+This is a built-in plugin of kubed, so you get it once you run `kubed init` for the first time.
+
+If you want to upgrade at any time, you can fetch the latest version using
 
 ```
-$ draft plugin repository add https://github.com/bacongobbler/draft-generators
-$ draft plugin install generator-controller
+$ kubed plugin upgrade generator-controller
 ```

@@ -9,32 +9,32 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Azure/draft/pkg/draft/manifest"
 	"github.com/BurntSushi/toml"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/bacongobbler/draft-generator-controller/pkg/pack"
+	"github.com/bacongobbler/kubed-generator-controller/pkg/manifest"
+	"github.com/bacongobbler/kubed-generator-controller/pkg/pack"
 )
 
 const (
-	environmentEnvVar = "DRAFT_ENV"
+	environmentEnvVar = "KUBED_ENV"
 	globalUsage       = `Generates boilerplate code that is necessary to write a microservice.
 
 By default it scaffolds your application using the javascript pack, but it can be changed using the --pack flag.
-See 'draft generate controller --help' to see what packs are available.
+See 'kubed generate controller --help' to see what packs are available.
 `
 	deploymentTemplate = `kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: {{ template "{% .AppName %}.{% .Name %}.name" . }}
   labels:
-    draft: {{ template "{% .AppName %}.name" . }}
+    kubed: {{ template "{% .AppName %}.name" . }}
     controller: {% .Name %}
 spec:
   selector:
     matchLabels:
-      draft: {{ template "{% .AppName %}.name" . }}
+      kubed: {{ template "{% .AppName %}.name" . }}
       controller: {% .Name %}
   replicas: {{ default .Values.{% .Name %}.replicaCount 1 }}
   template:
@@ -42,7 +42,7 @@ spec:
       annotations:
         buildID: {{ .Values.buildID }}
       labels:
-        draft: {{ template "{% .AppName %}.name" . }}
+        kubed: {{ template "{% .AppName %}.name" . }}
         controller: {% .Name %}
     spec:
       containers:
@@ -59,11 +59,11 @@ apiVersion: v1
 metadata:
   name: {{ template "{% .AppName %}.{% .Name %}.name" . }}
   labels:
-    draft: {{ template "{% .AppName %}.name" . }}
+    kubed: {{ template "{% .AppName %}.name" . }}
     controller: {% .Name %}
 spec:
   selector:
-    draft: {{ template "{% .AppName %}.name" . }}
+    kubed: {{ template "{% .AppName %}.name" . }}
     controller: {% .Name %}
   ports:
     - port: 80
@@ -124,17 +124,17 @@ func newRootCmd(stdout io.Writer, stdin io.Reader, stderr io.Writer) *cobra.Comm
 
 func (c *generateCmd) run() error {
 	// --pack was explicitly defined, so we can just lazily use that here. No detection required.
-	// if DRAFT_PLUGIN_DIR is unset, we just fallback to ./packs
-	packsFound, err := pack.Find(filepath.Join(os.Getenv("DRAFT_PLUGIN_DIR"), "packs"), c.pack)
+	// if KUBED_PLUGIN_DIR is unset, we just fallback to ./packs
+	packsFound, err := pack.Find(filepath.Join(os.Getenv("KUBED_PLUGIN_DIR"), "packs"), c.pack)
 	if err != nil {
 		return err
 	}
 
-	var draftConfig manifest.Manifest
-	if _, err := toml.DecodeFile(filepath.Join("config", "draft.toml"), &draftConfig); err != nil {
+	var config manifest.Manifest
+	if _, err := toml.DecodeFile(filepath.Join("config", "draft.toml"), &config); err != nil {
 		return err
 	}
-	appConfig, found := draftConfig.Environments[defaultDraftEnvironment()]
+	appConfig, found := config.Environments[defaultDraftEnvironment()]
 	if !found {
 		return fmt.Errorf("Environment %v not found", defaultDraftEnvironment())
 	}

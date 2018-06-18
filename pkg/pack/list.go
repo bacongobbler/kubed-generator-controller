@@ -1,7 +1,7 @@
 package pack
 
 import (
-	"github.com/bacongobbler/draft-generator-controller/pkg/pack/repo"
+	"github.com/bacongobbler/kubed-generator-controller/pkg/pack/repo"
 )
 
 // List returns a list of all pack names found in the specified repository or error.
