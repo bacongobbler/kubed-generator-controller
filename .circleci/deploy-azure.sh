@@ -2,9 +2,9 @@
 
 set -euo pipefail
 IFS=$'\n\t'
-DRAFT_ROOT="${BASH_SOURCE[0]%/*}/.."
+ROOT="${BASH_SOURCE[0]%/*}/.."
 
-cd "$DRAFT_ROOT"
+cd "$ROOT"
 
 # Skip on pull request builds
 if [[ -n "${CIRCLE_PR_NUMBER:-}" ]]; then
@@ -30,7 +30,7 @@ apt-get update && apt-get install -yq python-pip libffi-dev libssl-dev
 easy_install pyOpenSSL
 pip install --disable-pip-version-check --no-cache-dir azure-cli~=2.0
 
-echo "Building Draft binaries"
+echo "Building binaries"
 make build-cross
 VERSION="${VERSION}" make dist checksum
 if [[ -n "${CIRCLE_TAG:-}" ]]; then

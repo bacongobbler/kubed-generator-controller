@@ -8,7 +8,7 @@ var (
 	// ErrDoesNotExist indicates that the pack repo does not exist
 	ErrDoesNotExist = errors.New("pack repo does not exist")
 	// ErrHomeMissing indicates that the packs dir is missing.
-	ErrHomeMissing = errors.New(`pack repo home "$(draft home)/packs" does not exist`)
+	ErrHomeMissing = errors.New(`pack repo home does not exist`)
 	// ErrMissingSource indicates that information about the source of the pack repo was not found
 	ErrMissingSource = errors.New("cannot get information about pack repo source")
 	// ErrRepoDirty indicates that the pack repo was modified

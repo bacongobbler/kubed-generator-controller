@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: /go/src/github.com/bacongobbler/draft-generator-controller
+    working_directory: /go/src/github.com/bacongobbler/kubed-generator-controller
     docker:
       - image: golang:1.10
     environment:
