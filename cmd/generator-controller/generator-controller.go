@@ -211,7 +211,7 @@ func (c *generateCmd) run() error {
 	}
 
 	// Each pack makes the assumption that they're listening on port 8080
-	addRoute(filepath.Join("config", "routes"), fmt.Sprintf("/%s/\t%s\t8080\t/", c.name, c.name))
+	addRoute(filepath.Join("config", "routes"), fmt.Sprintf("/%s/\t%s\t8080", c.name, c.name))
 
 	fmt.Fprintln(c.stdout, "--> Ready to sail")
 	return nil
